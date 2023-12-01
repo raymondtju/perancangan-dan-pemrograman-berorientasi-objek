@@ -1,7 +1,6 @@
 # Topik: rental kendaraan di tempat wisata
 # Deskripsi: caren adalah aplikasi untuk mencari kendaraan rental di tempat wisata, anda bisa memilih berbagai jenis kendaraan mulai dari mobil, motor, hingga truk, , kendaraan " Ini dibedakan dengan berbagai jenis spesifikasi , anda bisa menambahkan , memfilter, dan membooking kendaraan ,  sudah siapkah anda menyewa kendaraan impian anda di tempat wisata? Caren colusinya
 
-import pandas as pd
 from typing import List
 from time import sleep
 
@@ -10,6 +9,8 @@ from classes.booking import create_booking, RegularBookingStrategy, Booking
 from libs.vehicle_search_strategy import VehicleSearch, VehicleTypeSearch, VehicleBrandSearch, VehicleYearSearch, VehicleRentDurationSearch
 from libs.cls import cls
 from classes.app import App
+from libs.show import show_available_vehicle, show_booking
+from libs.init import init_dummy_data
 
 
 def vehicle_type_interface():
@@ -18,68 +19,8 @@ def vehicle_type_interface():
     print(f"{i+1}. {vehicle_type.value}")
 
 
-def show_available_vehicle(vehicle_data: List[Vehicle]):
-  print()
-  if not vehicle_data:
-    print("No vehicle found.")
-    return
-
-  for vehicle in vehicle_data:
-    print(f"{vehicle}. ")
-  data = [[
-      vehicle.vehicle_information.brand,
-      vehicle.vehicle_information.year,
-      vehicle.vehicle_information.type.value,
-      vehicle.max_rent_duration,
-      vehicle.price
-  ] for vehicle in vehicle_data]
-
-  # Create a DataFrame from the data
-  df = pd.DataFrame(
-      data, columns=["Brand", "Year", "Type", "Max Rent Duration", "Price"])
-
-  print(df.to_string(index=True))
-
-
 if __name__ == "__main__":
-
-  vehicle1: Vehicle = Vehicle(
-      price=500,
-      max_rent_duration=7,
-      vehicle_information=VehicleInformation(
-          type=VehicleType.CAR,
-          brand="Toyota",
-          passenger=5,
-          year=2023
-      ),
-      is_available=True
-  )
-
-  vehicle2: Vehicle = Vehicle(
-      price=1000,
-      max_rent_duration=14,
-      vehicle_information=VehicleInformation(
-          type=VehicleType.TRUCK,
-          brand="Ford",
-          passenger=3,
-          year=2020
-      ),
-      is_available=False
-  )
-
-  vehicle3: Vehicle = Vehicle(
-      price=300,
-      max_rent_duration=3,
-      vehicle_information=VehicleInformation(
-          type=VehicleType.MOTORCYCLE,
-          brand="Honda",
-          passenger=1,
-          year=2019
-      ),
-      is_available=False
-  )
-
-  vehicle_data = [vehicle1, vehicle2, vehicle3]
+  vehicle_data = init_dummy_data()
   app = App(vehicle_data)
   available_vehicles = VehicleSearch()
 
@@ -152,8 +93,7 @@ if __name__ == "__main__":
       # My Booking
       elif choose_option == 2:
         my_booking = app.get_bookings()
-        my_booking_vehicle = [booking.vehicle for booking in my_booking]
-        show_available_vehicle(my_booking_vehicle)
+        show_booking(my_booking)
 
         print("\n1. Cancel booking")
         print("2. Return vehicle")
@@ -177,5 +117,5 @@ if __name__ == "__main__":
         raise ValueError("Invalid input.")
 
     except ValueError as ve:
-      print("Invalid input.", ve)
+      print("Invalid input.")
       input("Press enter to main page...")

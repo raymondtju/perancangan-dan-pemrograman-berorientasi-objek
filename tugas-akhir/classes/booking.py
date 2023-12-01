@@ -18,10 +18,11 @@ class BookingStrategy(ABC):
 class Booking:
   def __init__(self, vehicle: Vehicle, duration_day: int, booking_strategy: BookingStrategy):
     self._vehicle = vehicle
-    self._duration_day = duration_day
+    self._duration_day = duration_day or 1
     self._is_paid = False
     self._is_returned = False
     self._is_cancelled = False
+    self.cost = booking_strategy.calculate_booking_cost(self)
     self.booking_strategy = booking_strategy
     self.observers = []
 
@@ -104,7 +105,7 @@ def create_booking(vehicle: Vehicle, duration_day: int, booking_strategy: Bookin
 
 class RegularBookingStrategy(BookingStrategy):
   def calculate_booking_cost(self, booking: Booking) -> float:
-    return booking.vehicle.price * booking.duration
+    return booking.vehicle.price * booking.duration_day
 
 
 class DiscountBookingStrategy(BookingStrategy):
