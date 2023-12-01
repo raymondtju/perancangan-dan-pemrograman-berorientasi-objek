@@ -123,6 +123,6 @@ class DiscountBookingStrategy(BookingStrategy):
     self.discount_percentage = discount_percentage
 
   def calculate_booking_cost(self, booking: Booking) -> float:
-    regular_cost = booking.vehicle.price * booking.duration
+    regular_cost = booking.vehicle.price * booking.duration_day
     discount_amount = regular_cost * self.discount_percentage
     return regular_cost - discount_amount

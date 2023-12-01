@@ -1,6 +1,11 @@
+from typing import List
+
 from classes.booking import Booking
 from classes.vehicle import Vehicle
-from typing import List
+
+# class BookingRepository:
+#   def __init__(self) -> None:
+#     self._bookings = []
 
 
 class App:
