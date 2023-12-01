@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from classes.vehicle import Vehicle
+from datetime import date, datetime
 
 
 class BookingStrategy(ABC):
@@ -22,6 +23,7 @@ class Booking:
     self._is_paid = False
     self._is_returned = False
     self._is_cancelled = False
+    self.date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     self.cost = booking_strategy.calculate_booking_cost(self)
     self.booking_strategy = booking_strategy
     self.observers = []
@@ -40,6 +42,12 @@ class Booking:
 
   @is_paid.setter
   def is_paid(self, value: bool):
+    if self._is_paid:
+      raise Exception("Booking has already been paid.")
+
+    if self._is_returned:
+      raise Exception("Booking has already been returned.")
+
     if self._is_cancelled:
       raise Exception("Booking has already been cancelled.")
 
@@ -52,6 +60,8 @@ class Booking:
 
   @is_returned.setter
   def is_returned(self, value: bool):
+    if self._is_returned:
+      raise Exception("Booking has already been returned.")
     if self._is_cancelled:
       raise Exception("Booking has already been cancelled.")
 

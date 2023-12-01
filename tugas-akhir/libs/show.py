@@ -29,9 +29,10 @@ def show_booking(booking: List[Booking]):
   print()
   if not booking:
     print("No booking found.")
-    return
+    return None
 
   data = [[
+      booking.date,
       booking.vehicle.vehicle_information.brand,
       booking.vehicle.vehicle_information.year,
       booking.vehicle.vehicle_information.type.value,
@@ -44,6 +45,6 @@ def show_booking(booking: List[Booking]):
 
   # Create a DataFrame from the data
   df = pd.DataFrame(
-      data, columns=["Brand", "Year", "Type", "Duration", "Cost", "Paid", "Returned", "Cancelled"])
+      data, columns=["Date", "Brand", "Year", "Type", "Duration", "Cost", "Paid", "Returned", "Cancelled"])
 
   print(df.to_string(index=True))

@@ -38,84 +38,129 @@ if __name__ == "__main__":
       if choose_option == 1:
         cls()
         vehicle_type_interface()
-        choose_type = int(input("Choose vehicle type: "))
 
-        v_search = VehicleSearch()
-        if choose_type == 1:
-          try:
-            vehicle_type = VehicleType.CAR
-            prefered_brand = input("Prefered brand: ")
-            passenger = input("Passenger: ")
-            year = input("Year: ")
-            rent_duration = input("Rent duration: ")
+        try:
+          v_search = VehicleSearch()
+          choose_type = int(input("Choose vehicle type: "))
 
-            v_search.add_search_strategy([
-                VehicleYearSearch(int(year)) if year else None,
-                VehicleTypeSearch(vehicle_type),
-                VehicleBrandSearch(prefered_brand) if prefered_brand else None,
-                VehicleRentDurationSearch(
-                    int(rent_duration)
-                ) if rent_duration else None
-            ])
-            filtered = v_search.filter_vehicles(app.vehicles)
+          if choose_type == 1:
+            try:
+              vehicle_type = VehicleType.CAR
+              prefered_brand = input("Prefered brand: ")
+              passenger = input("Passenger: ")
+              year = input("Year: ")
+              rent_duration = input("Rent duration: ")
 
-            if filtered:
-              show_available_vehicle(filtered)
-            else:
-              raise ValueError("No vehicle found.")
+              v_search.add_search_strategy([
+                  VehicleYearSearch(int(year)) if year else None,
+                  VehicleTypeSearch(vehicle_type),
+                  VehicleBrandSearch(
+                      prefered_brand) if prefered_brand else None,
+                  VehicleRentDurationSearch(
+                      int(rent_duration)
+                  ) if rent_duration else None
+              ])
+              filtered = v_search.filter_vehicles(app.vehicles)
 
-            choose_vehicle = int(input("Book by number: "))
-            if choose_vehicle < 0 or choose_vehicle > len(filtered) - 1:
-              raise ValueError("Choose a valid number.")
+              if filtered:
+                show_available_vehicle(filtered)
+              else:
+                raise ValueError("No vehicle found.")
 
-            create = create_booking(
-                filtered[choose_vehicle],
-                int(rent_duration) if rent_duration else None,
-                RegularBookingStrategy()
-            )
-            app.add_booking(create)
+              choose_vehicle = int(input("Book by number: "))
+              if choose_vehicle < 0 or choose_vehicle > len(filtered) - 1:
+                raise ValueError("Choose a valid number.")
 
-            print("Booking success.")
-            input("Press enter to main page...")
-          except ValueError as ve:
-            print("\nBooking failed.", ve)
-            input("Press enter to main page...")
+              create = create_booking(
+                  filtered[choose_vehicle],
+                  int(rent_duration) if rent_duration else None,
+                  RegularBookingStrategy()
+              )
+              app.add_booking(create)
 
-        elif choose_type == 2:
-          vehicle_type = VehicleType.TRUCK
+              print("Booking success.")
+              input("Press enter to main page...")
+            except ValueError as ve:
+              print("\nBooking failed.", ve)
+              input("Press enter to main page...")
 
-        elif choose_type == 3:
-          vehicle_type = VehicleType.MOTORCYCLE
+          elif choose_type == 2:
+            vehicle_type = VehicleType.TRUCK
 
-        else:
-          raise ValueError("Invalid vehicle type.")
+          elif choose_type == 3:
+            vehicle_type = VehicleType.MOTORCYCLE
+
+          else:
+            raise ValueError("\nInvalid vehicle type.")
+
+        except ValueError as ve:
+          print("\nInvalid input.")
+          input("Press enter to main page...")
 
       # My Booking
       elif choose_option == 2:
         my_booking = app.get_bookings()
         show_booking(my_booking)
 
-        print("\n1. Cancel booking")
-        print("2. Return vehicle")
-        print("3. Back")
-        choose_my_book_opt = int(input("Choose option: "))
+        if my_booking:
+          print("\n1. Pay booking")
+          print("2. Cancel vehicle")
+          print("3. Return booking")
+          print("4. Back")
 
-        # Cancel booking
-        if choose_my_book_opt == 1:
-          choose_my_book = int(input("Cancel booking by number: "))
-          if choose_my_book < 0 or choose_my_book > len(my_booking) - 1:
-            raise ValueError("Choose a valid number.")
+          try:
+            choose_my_book_opt = int(input("Choose option: "))
 
-          app.cancel_booking(my_booking[choose_my_book])
-          print("Booking cancelled.")
+            # Pay booking
+            if choose_my_book_opt == 1:
+              choose_my_book = int(input("Pay booking by number: "))
+              if choose_my_book < 0 or choose_my_book > len(my_booking) - 1:
+                raise ValueError("Choose a valid number.")
+
+              app.pay_booking(my_booking[choose_my_book])
+              print("Booking paid.")
+              input("Press enter to main page...")
+
+            # Cancel booking
+            elif choose_my_book_opt == 2:
+              choose_my_book = int(input("Cancel booking by number: "))
+              if choose_my_book < 0 or choose_my_book > len(my_booking) - 1:
+                raise ValueError("Choose a valid number.")
+
+              app.cancel_booking(my_booking[choose_my_book])
+              print("Booking cancelled.")
+              input("Press enter to main page...")
+
+            # Return vehicle
+            elif choose_my_book_opt == 3:
+              choose_my_book = int(input("Return vehicle by number: "))
+              if choose_my_book < 0 or choose_my_book > len(my_booking) - 1:
+                raise ValueError("Choose a valid number.")
+
+              app.return_booking(my_booking[choose_my_book])
+              print("Vehicle returned.")
+              input("Press enter to main page...")
+
+            # Back
+            elif choose_my_book_opt == 4:
+              pass
+
+            else:
+              raise ValueError("\nInvalid input.")
+
+          except ValueError as ve:
+            print("\nError:", ve)
+            input("Press enter to main page...")
+
+        else:
           input("Press enter to main page...")
 
       elif choose_option == 3:
         break
 
       else:
-        raise ValueError("Invalid input.")
+        raise ValueError("\nInvalid input.")
 
     except ValueError as ve:
-      print("Invalid input.")
+      print("\nInvalid input.")
       input("Press enter to main page...")
