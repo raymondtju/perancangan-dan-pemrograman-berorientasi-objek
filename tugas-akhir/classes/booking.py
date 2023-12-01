@@ -43,7 +43,7 @@ class Booking:
       raise Exception("Booking has already been cancelled.")
 
     self._is_paid = value
-    self.notify_observers()
+    self.notify()
 
   @property
   def is_returned(self):
@@ -58,7 +58,7 @@ class Booking:
       raise Exception("Booking has not been paid yet.")
 
     self._is_returned = value
-    self.notify_observers()
+    self.notify()
 
   @property
   def is_cancelled(self):
@@ -72,7 +72,7 @@ class Booking:
       raise Exception("Booking has already been returned.")
 
     self._is_cancelled = value
-    self.notify_observers()
+    self.notify()
 
   def attach_observer(self, observer):
     self.observers.append(observer)
@@ -80,12 +80,9 @@ class Booking:
   def detach_observer(self, observer):
     self.observers.remove(observer)
 
-  def notify_observers(self):
+  def notify(self):
     for observer in self.observers:
       observer.update(self)
-
-  def __str__(self):
-    return f"Booking for {self.vehicle.vehicle_information.brand} with duration {self._duration_day} days."
 
 
 class BookingObserver:
