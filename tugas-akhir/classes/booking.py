@@ -12,7 +12,7 @@ class BookingStrategy(ABC):
 '''
   Encapsulation
   Observer Pattern
-  Single Responsibility Principle
+  SCP - Single Responsibility Principle
 '''
 
 
