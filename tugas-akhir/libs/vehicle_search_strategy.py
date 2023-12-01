@@ -49,7 +49,7 @@ class VehicleBrandSearch(VehicleSearchStrategy):
     self.brand = brand
 
   def matches_vehicle(self, vehicle: Vehicle) -> bool:
-    return vehicle.vehicle_information.brand == self.brand and vehicle.is_available
+    return vehicle.vehicle_information.brand.lower() == self.brand.lower() and vehicle.is_available
 
 
 class VehicleYearSearch(VehicleSearchStrategy):
@@ -65,4 +65,4 @@ class VehicleRentDurationSearch(VehicleSearchStrategy):
     self.rent_duration = rent_duration
 
   def matches_vehicle(self, vehicle: Vehicle) -> bool:
-    return vehicle.vehicle_information.rent_duration >= self.rent_duration and vehicle.is_available
+    return (vehicle.max_rent_duration >= self.rent_duration) and vehicle.is_available
