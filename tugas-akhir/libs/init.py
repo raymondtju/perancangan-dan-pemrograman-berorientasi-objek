@@ -23,7 +23,7 @@ def init_dummy_data():
           passenger=3,
           year=2020
       ),
-      is_available=False
+      is_available=True
   )
 
   vehicle3: Vehicle = Vehicle(
@@ -35,7 +35,7 @@ def init_dummy_data():
           passenger=1,
           year=2019
       ),
-      is_available=False
+      is_available=True
   )
 
   return [vehicle1, vehicle2, vehicle3]
