@@ -66,3 +66,19 @@ class VehicleRentDurationSearch(VehicleSearchStrategy):
 
   def matches_vehicle(self, vehicle: Vehicle) -> bool:
     return (vehicle.max_rent_duration >= self.rent_duration) and vehicle.is_available
+
+
+class VehicleLocationSearch(VehicleSearchStrategy):
+  def __init__(self, location: int) -> None:
+    self.location = location
+
+  def matches_vehicle(self, vehicle: Vehicle) -> bool:
+    return self.location.lower() in vehicle.location.lower() and vehicle.is_available
+
+
+class VehiclePassengerSearch(VehicleSearchStrategy):
+  def __init__(self, passenger: int) -> None:
+    self.passenger = passenger
+
+  def matches_vehicle(self, vehicle: Vehicle) -> bool:
+    return vehicle.vehicle_information.passenger >= self.passenger and vehicle.is_available

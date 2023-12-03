@@ -11,6 +11,7 @@ def init_dummy_data():
           passenger=5,
           year=2023
       ),
+      location="Pantai Indah Kapuk",
       is_available=True
   )
 
@@ -23,6 +24,7 @@ def init_dummy_data():
           passenger=3,
           year=2020
       ),
+      location="Hutan Mangrove",
       is_available=True
   )
 
@@ -35,6 +37,7 @@ def init_dummy_data():
           passenger=1,
           year=2019
       ),
+      location="Wahana Ancol",
       is_available=True
   )
 

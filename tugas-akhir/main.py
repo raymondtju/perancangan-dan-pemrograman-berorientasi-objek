@@ -6,7 +6,7 @@ from time import sleep
 
 from classes.vehicle import VehicleType, VehicleInformation, Vehicle
 from classes.booking import create_booking, RegularBookingStrategy, Booking
-from libs.vehicle_search_strategy import VehicleSearch, VehicleTypeSearch, VehicleBrandSearch, VehicleYearSearch, VehicleRentDurationSearch
+from libs.vehicle_search_strategy import VehicleSearch, VehicleTypeSearch, VehicleLocationSearch, VehiclePassengerSearch, VehicleRentDurationSearch
 from libs.cls import cls
 from classes.app import App
 from libs.show import show_available_vehicle, show_booking
@@ -56,19 +56,35 @@ if __name__ == "__main__":
           else:
             raise ValueError("\nInvalid vehicle type.")
 
-          prefered_brand = input("Prefered brand: ")
+          v_search.add_search_strategy([
+              VehicleTypeSearch(vehicle_type),
+          ])
+          filtered = v_search.filter_vehicles(app.vehicles)
+          if filtered:
+            show_available_vehicle(filtered)
+          else:
+            raise ValueError("No vehicle found.")
+
+          # prefered_brand = input("Prefered brand: ")
           passenger = input("Passenger: ")
-          year = input("Year: ")
+          # year = input("Year: ")
           rent_duration = input("Rent duration: ")
+          location = input("Location: ")
 
           v_search.add_search_strategy([
-              VehicleYearSearch(int(year)) if year else None,
+              # VehicleYearSearch(int(year)) if year else None,
               VehicleTypeSearch(vehicle_type),
-              VehicleBrandSearch(
-                  prefered_brand) if prefered_brand else None,
+              # VehicleBrandSearch(
+              # prefered_brand) if prefered_brand else None,
               VehicleRentDurationSearch(
                   int(rent_duration)
-              ) if rent_duration else None
+              ) if rent_duration else None,
+              VehicleLocationSearch(
+                  location
+              ) if location else None,
+              VehiclePassengerSearch(
+                  int(passenger)
+              ) if passenger else None,
           ])
           filtered = v_search.filter_vehicles(app.vehicles)
 

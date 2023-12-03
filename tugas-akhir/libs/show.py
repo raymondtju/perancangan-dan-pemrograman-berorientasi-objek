@@ -14,13 +14,15 @@ def show_available_vehicle(vehicle_data: List[Vehicle]):
       vehicle.vehicle_information.brand,
       vehicle.vehicle_information.year,
       vehicle.vehicle_information.type.value,
+      vehicle.location,
+      vehicle.vehicle_information.passenger,
       vehicle.max_rent_duration,
       vehicle.price,
   ] for vehicle in vehicle_data]
 
   # Create a DataFrame from the data
   df = pd.DataFrame(
-      data, columns=["Brand", "Year", "Type", "Max Rent Duration", "Price"])
+      data, columns=["Brand", "Year", "Type", "Location", "Max Passenger", "Max Rent Duration", "Price"])
 
   print(df.to_string(index=True))
 
@@ -36,6 +38,7 @@ def show_booking(booking: List[Booking]):
       booking.vehicle.vehicle_information.brand,
       booking.vehicle.vehicle_information.year,
       booking.vehicle.vehicle_information.type.value,
+      booking.vehicle.location,
       booking.duration_day,
       booking.cost,
       booking.is_paid,
@@ -45,6 +48,6 @@ def show_booking(booking: List[Booking]):
 
   # Create a DataFrame from the data
   df = pd.DataFrame(
-      data, columns=["Date", "Brand", "Year", "Type", "Duration", "Cost", "Paid", "Returned", "Cancelled"])
+      data, columns=["Date", "Brand", "Year", "Type", "Location", "Duration", "Cost", "Paid", "Returned", "Cancelled"])
 
   print(df.to_string(index=True))
